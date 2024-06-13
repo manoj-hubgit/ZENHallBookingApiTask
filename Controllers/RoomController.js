@@ -43,10 +43,17 @@ export const createBooking = (req, res) => {
     res.status(200).send("Room booked successfully");
 };
 
+
 export const roomsWithBookedData = (req, res) => {
-    const data = rooms.map(ele => ({
-        Roomname: ele.Roomname,
-        bookings: ele.bookings
+    const data = rooms.map(room => ({
+        Roomname: room.Roomname,
+        bookings: room.bookings.length > 0 ? room.bookings.map(booking => ({
+            bookedStatus: "Booked",
+            customerName: booking.customerName,
+            date: booking.date,
+            startTime: booking.startTime,
+            endTime: booking.endTime
+        })) : [{ bookedStatus: "Available" }]
     }));
     res.status(200).send(data);
 };
